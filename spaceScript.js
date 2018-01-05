@@ -10,7 +10,14 @@ var sumoImg = new Image();
 var sumos_y = 55;
 var sumos_x = 0;
 sumoImg.src = "https://i.imgur.com/LFFjwSH.jpg";
-ctx.drawImage(sumoImg, sumos_x, sumos_y, canvas.width, canvas.height);
+window.onload = function(){
+	ctx.drawImage(sumoImg, sumos_x, sumos_y, canvas.width, canvas.height);
+	ctx.font = "30px Arial";
+	ctx.fillStyle = "red";
+	ctx.fillText("Red: " +  String(spaceCounter), 10, 50);
+	ctx.fillStyle = "blue";
+	ctx.fillText("Blue: " + String(enterCounter), 350, 50);
+};
 
 var blueWinsImg = new Image();
 blueWinsImg.src = "https://i.imgur.com/mW9e3oy.jpg";
@@ -22,7 +29,7 @@ var tieImg = new Image();
 tieImg.src = "https://i.imgur.com/hP8aJl2.jpg";
 
 //Number of keypresses tracker
-var spaceCounter = 0;
+var spaceCounter = 0; 
 var enterCounter = 0;
 
 function checkKeyPressed(key)
@@ -91,6 +98,3 @@ function playGame()
 };
 
 playGame();
-
-
-
