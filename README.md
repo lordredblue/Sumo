@@ -1,3 +1,4 @@
 # Sumo
 HTML5 Sumo Wrestling game.
-Artwork by Wenjing Ma
+Designed by Wenjing Ma
+Developed by Hrishee
