@@ -1,8 +1,4 @@
 //spaceScript.js
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
- // some code..
- alert('you are on a mobile device');
-}
 
 // initialize canvas
 var canvas = document.getElementById("spaceCanvas");
@@ -136,9 +132,9 @@ function animateFight()
     requestAnimationFrame(animateFight);
 }
   else{
+  	ctx.font = "70px Joti One"
     ctx.clearRect(0,0,canvas.width, canvas.height);
     ctx.drawImage(sumoImg, 0,sumos_y, canvas.width, canvas.height);
-    ctx.font = "70px Joti One";
 	ctx.fillStyle = "red";
 	ctx.fillText("Red: " +  String(spaceCounter), 10, 70);
 	ctx.fillStyle = "blue";
@@ -180,6 +176,13 @@ function animateDuringGame()
 var spaceCounter = 0; 
 var enterCounter = 0;
 
+function checkKeyPressedMobile()
+{
+	spaceCounter+=1;
+	animateDuringGame();
+	changeBorderColor();
+}
+
 function checkKeyPressed(key)
 { 	
 	if(gameEnd || !gameStart){}
@@ -188,15 +191,17 @@ function checkKeyPressed(key)
 		spaceCounter += 1;
 		sumos_x +=20
 		animateDuringGame();
+		changeBorderColor();
 	}
 
 	else if(key.keyCode == "13"){
 		enterCounter += 1;
 		sumos_x -= 20
 		animateDuringGame();
+		changeBorderColor();
 	}
 
-	changeBorderColor();
+	
 };
 
 function changeBorderColor()
@@ -312,6 +317,10 @@ function countDown(secs, elem)
 function playGame()
 {	
 	loadInitialCanvas();
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+	{
+	 window.addEventListener("mouseup", checkKeyPressedMobile, false);
+	}
 	window.addEventListener("keyup", checkKeyPressed, false);
 	countDown(14, "underCanvas"); //add x to desired time limit to allow for 123fight
 };
