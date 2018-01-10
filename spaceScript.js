@@ -3,42 +3,54 @@
 // initialize canvas
 var canvas = document.getElementById("spaceCanvas");
 var ctx = canvas.getContext("2d");
+
+var toolCanvas = document.getElementById("toolbar");
+var toolCtx = toolCanvas.getContext("2d");
+
 var gameEnd = false;
 var gameStart = false;
+var playClick = true;
 
 
 //initialize images 
 var sumoImg = new Image();
-var sumos_y = 55;
+var sumos_y = 0;
 var sumos_x = 0;
-sumoImg.src = "https://i.imgur.com/LFFjwSH.jpg";
+sumoImg.src = "images/Wrestlers.png";
 
 var blueWinsImg = new Image();
-blueWinsImg.src = "https://i.imgur.com/mW9e3oy.jpg";
+blueWinsImg.src = "images/WinnerB.png";
 
 var redWinsImg = new Image();
-redWinsImg.src = "https://i.imgur.com/M9tZ30a.jpg";
+redWinsImg.src = "images/WinnerR.png";
 
 var tieImg = new Image();
-tieImg.src = "https://i.imgur.com/hP8aJl2.jpg";
+tieImg.src = "images/WinnerN.png";
 
 var readyin3Img = new Image();
-readyin3Img.src = "https://i.imgur.com/nMmcpSP.jpg";
+readyin3Img.src = "images/readyin3.jpg";
 
 var readyin2Img = new Image();
-readyin2Img.src = "https://i.imgur.com/C1XK5Cu.jpg";
+readyin2Img.src = "images/readyin2.jpg";
 
 var readyin1Img = new Image();
-readyin1Img.src = "https://i.imgur.com/k1Z2Wjz.jpg";
+readyin1Img.src = "images/readyin1.jpg";
 
 var fightImg = new Image();
-fightImg.src = "Fight.png";
+fightImg.src = "images/Fight_1.png";
 
 var instructNotPressed = new Image();
-instructNotPressed.src = "Instruction_UP.png";
+instructNotPressed.src = "images/Instructions_UP.png";
 
 var instructPressed = new Image();
-instructPressed.src = "Instruction_P.png";
+instructPressed.src = "images/Instructions_P.png";
+
+var replayImgNotPressed = new Image();
+replayImgNotPressed.src = "images/PlayAgain_UP.png";
+
+var replayImgPressed = new Image();
+replayImgPressed.src = "images/PlayAgain_P.png";
+
 
 function instructionScreen()
 {	
@@ -50,13 +62,26 @@ function instructionScreen()
 		{	
 			//alert(getCursorPosition(e)); //use this to find coords of play button
 		  	testCoords = getCursorPosition(e);
-		  	if(testCoords[0] >= 300 && testCoords[0] <= 520 && testCoords[1] >=364 && testCoords[1] <=464) //play button coords
+		  	if(playClick && testCoords[0] >= 300 && testCoords[0] <= 520 && testCoords[1] >=364 && testCoords[1] <=464) //play button coords
 		  	{	
 		  		//code goes here if click hits target
+		  		
 		  		setTimeout(function(){
 		  			ctx.drawImage(instructPressed, 0,0, canvas.width, canvas.height);}, 0);
-		  		setTimeout(function(){playGame();}, 500);
+		  		playClick = false;
+		  		setTimeout(function(){playGame();}, 1000);
+
 		  	};
+		  	//replay button
+		  	if(testCoords[0] >= 735 && testCoords[0] <= 793 && testCoords[1] >=550 && testCoords[1] <=600){
+		  		
+		  		toolCtx.clearRect(0,0,toolCanvas.width, toolCanvas.height);
+		  		setTimeout(function(){
+		  			toolCtx.drawImage(replayImgPressed, toolCanvas.width-120, 0, toolCanvas.height, toolCanvas.height);}, 0);
+
+		  		setTimeout(function(){
+		  			location.reload();},500);
+		  	}
 		};
 		 
 		function getCursorPosition(e) 
@@ -80,11 +105,15 @@ function instructionScreen()
 		};
 
 		canvas.addEventListener("mouseup", onCanvasClick, false);
+		toolCanvas.addEventListener("mouseup", onCanvasClick, false);
 	};
 
 	window.onload = function(){
 		ctx.drawImage(instructNotPressed, 0,0, canvas.width, canvas.height);
+		toolCtx.drawImage(replayImgNotPressed, toolCanvas.width-120, 0, toolCanvas.height, toolCanvas.height);
 		checkCursorPositionOnClick(canvas);	
+
+		
 	}
 }
 
@@ -94,18 +123,18 @@ var pos_x = 0;
 
 function animateFight()
 {
-  
-  pos_x += 25;
-  if(pos_x-900 <= canvas.width){
+  pos_x += 15;
+
+  if(0+pos_x <= canvas.width/2){
     ctx.clearRect(0,0,canvas.width, canvas.height);
     ctx.drawImage(sumoImg, 0,sumos_y, canvas.width, canvas.height);
-    ctx.drawImage(fightImg, pos_x - 900, canvas.height/2 - 100, 900, 600);
+    ctx.drawImage(fightImg, 0+pos_x, 0, canvas.width-2*pos_x, canvas.height);
     requestAnimationFrame(animateFight);
 }
   else{
     ctx.clearRect(0,0,canvas.width, canvas.height);
     ctx.drawImage(sumoImg, 0,sumos_y, canvas.width, canvas.height);
-    ctx.font = "70px Arial";
+    ctx.font = "70px Joti One";
 	ctx.fillStyle = "red";
 	ctx.fillText("Red: " +  String(spaceCounter), 10, 70);
 	ctx.fillStyle = "blue";
@@ -134,7 +163,7 @@ function loadInitialCanvas()
 
 function animateDuringGame()
 {
-	ctx.font = "70px Arial";
+	ctx.font = "70px Joti One";
 	ctx.clearRect(0,0, canvas.width, canvas.height);
 	ctx.drawImage(sumoImg, sumos_x, sumos_y, canvas.width, canvas.height);
 	ctx.fillStyle = "red";
@@ -170,6 +199,7 @@ function changeBorderColor()
 	{
 		if(sumos_x < 0){
 			canvas.style.border = "5px solid #004cff";
+
 		};
 
 		if(sumos_x > 0){
@@ -179,20 +209,77 @@ function changeBorderColor()
 		if(sumos_x == 0){
 			canvas.style.border = "5px solid #a500ff";
 		};
+		toolCanvas.style.border = canvas.style.border;
 	};
 	
-
 //Spits out the result depending on who wins
 function compareSpaceEnter()
 {
 	if(spaceCounter > enterCounter){
-		ctx.drawImage(redWinsImg, 0, 75, canvas.width, canvas.height);
+		var text_y = 70;
+		var endSize;
+
+		function animateRedText(){
+		  text_y += 20;
+		  
+		  if(text_y <= 850){
+		    ctx.clearRect(0,0,canvas.width, canvas.height);
+		    ctx.drawImage(redWinsImg, 0, sumos_y, canvas.width, canvas.height);
+
+		    if(text_y-70<=110){
+		    	endSize = text_y-70;
+		    }
+		    ctx.font = String(endSize) + "px Joti One";
+		    ctx.fillStyle = "red";
+		    ctx.fillText("Red: " + String(spaceCounter), 10, 70+text_y);
+		    ctx.font = "70px Joti One";
+		    ctx.fillStyle = "blue";
+			ctx.fillText("Blue: " + String(enterCounter), 1100, 70);
+		    
+		    requestAnimationFrame(animateRedText);
+		  }
+
+		}
+
+		animateRedText();
+		
 	}
+
 	else if(spaceCounter < enterCounter){
-		ctx.drawImage(blueWinsImg, 0, 75, canvas.width, canvas.height);
+		var text_y = 70;
+		var endSize;
+		function animateBlueText(){
+		  text_y += 20;
+		  
+		  if(text_y <= 850){
+		    ctx.clearRect(0,0,canvas.width, canvas.height);
+		    ctx.drawImage(blueWinsImg, 0, sumos_y, canvas.width, canvas.height);
+
+		    if(text_y-70<=110){
+		    	endSize = text_y-70;
+		    }
+		    ctx.font = String(endSize) + "px Joti One";
+		    ctx.fillStyle = "blue";
+		    ctx.fillText("Blue: " + String(enterCounter), 900, 70+text_y);
+		    ctx.font = "70px Joti One";
+		    ctx.fillStyle = "red";
+			ctx.fillText("Red: " + String(spaceCounter), 10, 70);
+		    
+		    requestAnimationFrame(animateBlueText);
+		  }
+
+		}
+
+		animateBlueText();
 	}
+
 	else{
-		ctx.drawImage(tieImg, 0, 75, canvas.width, canvas.height);
+		ctx.clearRect(0,0,canvas.width, canvas.height);
+		ctx.drawImage(tieImg, 0, sumos_y, canvas.width, canvas.height);
+		ctx.fillStyle = "red";
+		ctx.fillText("Red: " +   String(spaceCounter), 10, 70);
+		ctx.fillStyle = "blue";
+		ctx.fillText("Blue: " + String(enterCounter), 1100, 70);
 	}
 };
 
