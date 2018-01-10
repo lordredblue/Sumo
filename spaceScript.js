@@ -1,4 +1,8 @@
 //spaceScript.js
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+ // some code..
+ alert('you are on a mobile device');
+}
 
 // initialize canvas
 var canvas = document.getElementById("spaceCanvas");
