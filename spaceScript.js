@@ -8,11 +8,6 @@ var ctx = canvas.getContext("2d");
 var toolCanvas = document.getElementById("toolbar");
 var toolCtx = toolCanvas.getContext("2d");
 
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-	canvas.style.width = "320px";
-	toolCanvas.style.width = "320px";
-}
-
 var gameEnd = false;
 var gameStart = false;
 var playClick = true;
