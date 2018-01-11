@@ -63,29 +63,9 @@ function instructionScreen()
 			//alert(getCursorPosition(e)); //use this to find coords of play button
 		  	testCoords = getCursorPosition(e);
 
-		  	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-		  		//red
-		  		if(testCoords[0]<=window.innerWidth){
-		  			spaceCounter+=1;
-					sumos_x +=20;
-					animateDuringGame();
-					changeBorderColor();
-		  		}
-		  		//blue 
-		  		if(testCoords[0]> window.innerWidth){
-		  			enterCounter+=1;
-					sumos_x -=20;
-					animateDuringGame();
-					changeBorderColor();
-		  		}
-
-		  	}
-		  
-
 		  	if(playClick && testCoords[0] >= 300 && testCoords[0] <= 520 && testCoords[1] >=364 && testCoords[1] <=464) //play button coords
 		  	{	
 		  		//code goes here if click hits target
-		  		
 		  		setTimeout(function(){
 		  			ctx.drawImage(instructPressed, 0,0, canvas.width, canvas.height);}, 0);
 		  		playClick = false;
@@ -101,6 +81,26 @@ function instructionScreen()
 
 		  		setTimeout(function(){
 		  			location.reload();},500);
+		  	}
+
+		  	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+		  		if(gameEnd || !gameStart){}
+
+		  		//red
+		  		else if(testCoords[0]<=window.innerWidth/2){
+		  			spaceCounter+=1;
+					sumos_x +=20;
+					animateDuringGame();
+					changeBorderColor();
+		  		}
+		  		//blue 
+		  		else if(testCoords[0]> window.innerWidth/2){
+		  			enterCounter+=1;
+					sumos_x -=20;
+					animateDuringGame();
+					changeBorderColor();
+		  		}
+
 		  	}
 		};
 		 
