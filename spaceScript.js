@@ -62,6 +62,26 @@ function instructionScreen()
 		{	
 			//alert(getCursorPosition(e)); //use this to find coords of play button
 		  	testCoords = getCursorPosition(e);
+
+		  	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+		  		//red
+		  		if(testCoords[0]<=window.innerWidth){
+		  			spaceCounter+=1;
+					sumos_x +=20;
+					animateDuringGame();
+					changeBorderColor();
+		  		}
+		  		//blue 
+		  		if(testCoords[0]> window.innerWidth){
+		  			enterCounter+=1;
+					sumos_x -=20;
+					animateDuringGame();
+					changeBorderColor();
+		  		}
+
+		  	}
+		  
+
 		  	if(playClick && testCoords[0] >= 300 && testCoords[0] <= 520 && testCoords[1] >=364 && testCoords[1] <=464) //play button coords
 		  	{	
 		  		//code goes here if click hits target
@@ -103,6 +123,9 @@ function instructionScreen()
 		    
 		    return [x,y];
 		};
+		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+			window.addEventListener("click", onCanvasClick, false);
+		}
 
 		canvas.addEventListener("mouseup", onCanvasClick, false);
 		toolCanvas.addEventListener("mouseup", onCanvasClick, false);
@@ -178,9 +201,12 @@ var enterCounter = 0;
 
 function checkKeyPressedMobile()
 {
-	spaceCounter+=1;
-	animateDuringGame();
-	changeBorderColor();
+	if(gameEnd || !gameStart){}
+
+	else{
+		
+	}	
+	
 }
 
 function checkKeyPressed(key)
@@ -317,10 +343,6 @@ function countDown(secs, elem)
 function playGame()
 {	
 	loadInitialCanvas();
-	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
-	{
-	 window.addEventListener("mouseup", checkKeyPressedMobile, false);
-	}
 	window.addEventListener("keyup", checkKeyPressed, false);
 	countDown(14, "underCanvas"); //add x to desired time limit to allow for 123fight
 };
