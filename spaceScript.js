@@ -125,7 +125,7 @@ function instructionScreen()
 		    return [x,y];
 		};
 		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-			window.addEventListener("click", onCanvasClick, false);
+			window.addEventListener("mouseup", onCanvasClick, false);
 		}
 
 		canvas.addEventListener("mouseup", onCanvasClick, false);
