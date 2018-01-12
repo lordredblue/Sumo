@@ -19,6 +19,9 @@ var sumos_y = 0;
 var sumos_x = 0;
 sumoImg.src = "images/Wrestlers.png";
 
+var backgroundImg = new Image();
+backgroundImg.src = "images/Background.png";
+
 var blueWinsImg = new Image();
 blueWinsImg.src = "images/WinnerB.png";
 
@@ -157,6 +160,7 @@ function animateFight()
 
   if(0+pos_x <= canvas.width/2){
     ctx.clearRect(0,0,canvas.width, canvas.height);
+    ctx.drawImage(backgroundImg, 0,0, canvas.width, canvas.height);
     ctx.drawImage(sumoImg, 0,sumos_y, canvas.width, canvas.height);
     ctx.drawImage(fightImg, 0+pos_x, 0, canvas.width-2*pos_x, canvas.height);
     requestAnimationFrame(animateFight);
@@ -165,6 +169,7 @@ function animateFight()
 
   	ctx.font = "70px Joti One";
     ctx.clearRect(0,0,canvas.width, canvas.height);
+    ctx.drawImage(backgroundImg, 0,0, canvas.width, canvas.height);
     ctx.drawImage(sumoImg, 0,sumos_y, canvas.width, canvas.height);
 	ctx.fillStyle = "red";
 	ctx.fillText("Red: " +  String(spaceCounter), 10, 70);
@@ -198,6 +203,7 @@ function animateDuringGame()
 {
 	ctx.font = "70px Joti One";
 	ctx.clearRect(0,0, canvas.width, canvas.height);
+	ctx.drawImage(backgroundImg, 0,0, canvas.width, canvas.height);
 	ctx.drawImage(sumoImg, sumos_x, sumos_y, canvas.width, canvas.height);
 	ctx.fillStyle = "red";
 	ctx.fillText("Red: " +   String(spaceCounter), 10, 70);
@@ -260,6 +266,7 @@ function compareSpaceEnter()
 		  
 		  if(text_y <= 850){
 		    ctx.clearRect(0,0,canvas.width, canvas.height);
+		    ctx.drawImage(backgroundImg, 0,0, canvas.width, canvas.height);
 		    ctx.drawImage(redWinsImg, 0, sumos_y, canvas.width, canvas.height);
 
 		    if(text_y-70<=110){
@@ -289,6 +296,7 @@ function compareSpaceEnter()
 		  
 		  if(text_y <= 850){
 		    ctx.clearRect(0,0,canvas.width, canvas.height);
+		    ctx.drawImage(backgroundImg, 0,0, canvas.width, canvas.height);
 		    ctx.drawImage(blueWinsImg, 0, sumos_y, canvas.width, canvas.height);
 
 		    if(text_y-70<=110){
@@ -311,6 +319,7 @@ function compareSpaceEnter()
 
 	else{
 		ctx.clearRect(0,0,canvas.width, canvas.height);
+		ctx.drawImage(backgroundImg, 0,0, canvas.width, canvas.height);
 		ctx.drawImage(tieImg, 0, sumos_y, canvas.width, canvas.height);
 		ctx.fillStyle = "red";
 		ctx.fillText("Red: " +   String(spaceCounter), 10, 70);
