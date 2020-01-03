@@ -1,3 +1,7 @@
+var gameserver = new Aθεος.Iρις();
+gameserver.Start(11, location.hostname+"sumo");
+
+
 //spaceScript.js
 
 
@@ -61,6 +65,26 @@ barFill.src = "images/Bar_Fill.png";
 var barBG = new Image();
 barBG.src = "images/Bar_BG.png";
 
+var patched_playGame = gameserver.Patch(playGame);
+var patched_Reload = gameserver.Patch(function(){
+	gameserver.Purge();
+	location.reload();
+});
+
+var patched_Hit_Left=gameserver.Patch(function(){
+	spaceCounter+=1;
+	sumos_x +=20;
+	animateDuringGame();
+	changeBorderColor();
+});
+
+var patched_Hit_Right=gameserver.Patch(function(){
+	enterCounter+=1;
+	sumos_x -=20;
+	animateDuringGame();
+	changeBorderColor();
+});
+
 
 function instructionScreen()
 {	
@@ -79,7 +103,7 @@ function instructionScreen()
 		  		setTimeout(function(){
 		  			ctx.drawImage(instructPressed, 0,0, canvas.width, canvas.height);}, 0);
 		  		playClick = false;
-		  		setTimeout(function(){playGame();}, 1000);
+		  		setTimeout(patched_playGame, 1000);
 
 		  	};
 		  	//replay button
@@ -89,27 +113,17 @@ function instructionScreen()
 		  		setTimeout(function(){
 		  			toolCtx.drawImage(replayImgPressed, toolCanvas.width-120, 0, toolCanvas.height, toolCanvas.height);}, 0);
 
-		  		setTimeout(function(){
-		  			location.reload();},500);
+		  		setTimeout(patched_Reload,500);
 		  	}
 
-		  	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+			  //if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+			  {
 		  		if(gameEnd || !gameStart){}
 
 		  		//red
-		  		else if(testCoords[0]<=window.innerWidth/2){
-		  			spaceCounter+=1;
-					sumos_x +=20;
-					animateDuringGame();
-					changeBorderColor();
-		  		}
+		  		else if(testCoords[0]<=window.innerWidth/2){patched_Hit_Left();}
 		  		//blue 
-		  		else if(testCoords[0]> window.innerWidth/2){
-		  			enterCounter+=1;
-					sumos_x -=20;
-					animateDuringGame();
-					changeBorderColor();
-		  		}
+		  		else if(testCoords[0]> window.innerWidth/2){patched_Hit_Right();}
 
 		  	}
 		};
@@ -221,17 +235,11 @@ function checkKeyPressed(key)
 	if(gameEnd || !gameStart){}
 
 	else if(key.keyCode == "32"){
-		spaceCounter += 1;
-		sumos_x +=20
-		animateDuringGame();
-		changeBorderColor();
+		patched_Hit_Left()
 	}
 
 	else if(key.keyCode == "13"){
-		enterCounter += 1;
-		sumos_x -= 20
-		animateDuringGame();
-		changeBorderColor();
+		patched_Hit_Right();
 	}
 
 	
